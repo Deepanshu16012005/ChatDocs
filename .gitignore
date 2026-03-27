@@ -1,0 +1,55 @@
+# =========================
+# 1. Security & Secrets
+# =========================
+# NEVER commit your API keys, database passwords, or JWT secrets!
+.env
+.env.*
+*.local
+
+# =========================
+# 2. Node.js & Express
+# =========================
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# =========================
+# 3. Python & FastAPI
+# =========================
+# Virtual environments
+rag_env/
+venv/
+env/
+.venv/
+
+# Compiled Python files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# =========================
+# 4. React Frontend
+# =========================
+build/
+dist/
+.eslintcache
+
+# =========================
+# 5. Project-Specific Files
+# =========================
+# Ignore downloaded/uploaded PDFs and temporary files
+pdf/
+temp_*.pdf
+*.pdf
+
+# Ignore auto-generated BM25 vocabularies (these can get large and are user-specific)
+sparse_vectors/*.json
+
+# =========================
+# 6. OS & Editor Files
+# =========================
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
