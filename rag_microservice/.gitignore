@@ -1,0 +1,19 @@
+# Environments
+rag_env/
+env/
+venv/
+
+# API Keys and Secrets
+.env
+
+# Python Cache
+__pycache__/
+*.pyc
+
+./pdf
+
+# Temp files created during document processing
+temp_*.pdf
+
+# User BM25 vocabularies (generated at runtime)
+sparse_vectors/*.json
