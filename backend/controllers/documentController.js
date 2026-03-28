@@ -69,6 +69,10 @@ exports.uploadDocument = async (req, res) => {
         console.error('Document Upload Error:', error);
 
         // If RAG microservice fails update status to failed
+        if (newDocument && newDocument._id) {
+            await Document.findByIdAndDeleteOne({ _id: newDocument._id });
+            console.log('Cleaned up failed document entry from MongoDB');
+    }
         res.status(500).json(
             {
                 error: 'Document processing failed' 

@@ -13,7 +13,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5000"],  # Express backend URL
+    allow_origins=["http://localhost:8000"], 
     allow_methods=["POST", "GET"],
     allow_headers=["*"]
 )
