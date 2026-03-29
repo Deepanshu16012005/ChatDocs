@@ -15,7 +15,14 @@ mongoose.connect(process.env.MONGO_URI)
   .catch((err) => console.error('❌ MongoDB connection error:', err));
 
 const authRoutes = require('./routes/authRoutes');
+const documentRoutes = require('./routes/documentRoutes');
+const chatRoutes = require('./routes/chatRoutes');
+const sessionRoutes = require('./routes/sessionRoutes');
+
 app.use('/api/auth', authRoutes);
+app.use('/api/documents', documentRoutes);
+app.use('/api/chat', chatRoutes);
+app.use('/api/sessions', sessionRoutes);
 
 // Basic Route for Testing
 app.get('/', (req, res) => {
