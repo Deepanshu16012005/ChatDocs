@@ -9,7 +9,6 @@ const authHeaders = () => ({
     }
 });
 
-// Upload a document
 export const uploadDocument = async (file) => {
     const formData = new FormData();
     formData.append('file', file);
@@ -27,7 +26,6 @@ export const uploadDocument = async (file) => {
     return response.data;
 };
 
-// Get all documents
 export const getDocuments = async () => {
     const response = await axios.get(
         `${API_URL}/api/documents`,
