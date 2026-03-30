@@ -13,10 +13,11 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:8000"], 
+    allow_origins=["*"], 
     allow_methods=["POST", "GET"],
     allow_headers=["*"]
 )
+INTERNAL_AUTH_KEY = os.getenv("INTERNAL_AUTH_KEY")
 # --- Data Models ---
 class ChatMessage(BaseModel):
     role: str
@@ -26,7 +27,9 @@ class QueryRequest(BaseModel):
     query: str
     user_id: str
     chat_history: List[ChatMessage] = []
-
+async def verify_auth(x_internal_key: Optional[str] = Header(None)):
+    if INTERNAL_AUTH_KEY and x_internal_key != INTERNAL_AUTH_KEY:
+        raise HTTPException(status_code=401, detail="Unauthorized: Invalid Secret Key")
 # --- Endpoints ---
 @app.get("/")
 async def root():
@@ -92,3 +95,8 @@ async def query_document(request: QueryRequest):
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+# 3. Port Configuration for Hugging Face
+if __name__ == "__main__":
+    import uvicorn
+    # Hugging Face Spaces uses port 7860
+    uvicorn.run(app, host="0.0.0.0", port=7860)
