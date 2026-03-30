@@ -42,8 +42,10 @@ async def process_document(
     user_id: str = Form(...),
     filename: str = Form(...),
     filetype: str = Form(...),
-    file_content: UploadFile = File(...)
+    file_content: UploadFile = File(...),
+    x_internal_key: Optional[str] = Header(None)
 ):
+    await verify_auth(x_internal_key)
     if filetype.upper() != "PDF":
         raise HTTPException(status_code=400, detail="Only PDF is supported.")
 
@@ -76,7 +78,11 @@ async def process_document(
 
 
 @app.post("/query")
-async def query_document(request: QueryRequest):
+async def query_document(
+    request: QueryRequest,
+    x_internal_key: Optional[str] = Header(None)
+):
+    await verify_auth(x_internal_key)
     if not request.query or not request.user_id:
         raise HTTPException(status_code=400, detail="Missing query or user_id")
 
