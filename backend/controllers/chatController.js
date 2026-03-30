@@ -48,7 +48,9 @@ exports.sendMessage = async (req, res) => {
                 }))
             },
             {
-                headers: { 'Content-Type': 'application/json' }
+                headers: { 'Content-Type': 'application/json', 
+                    'x-internal-key': process.env.INTERNAL_AUTH_KEY
+                }
             }
         );
 

@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-
 const LoginPage = () => {
     const navigate = useNavigate();
     const { login } = useAuth();
-    const [showPassword, setShowPassword] = useState(false);
     const [formData, setFormData] = useState({
         email: '',
         password: ''
     });
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const location = useLocation();
+    const successMessage = location.state?.message;
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -108,6 +109,15 @@ const LoginPage = () => {
                                     <line x1="12" y1="16" x2="12.01" y2="16" />
                                 </svg>
                                 <span className="text-xs text-red-400">{error}</span>
+                            </div>
+                        )}
+                        {successMessage && (
+                            <div className="flex items-center gap-2 bg-green-500/10 border border-green-500/30 rounded-lg px-4 py-3 mb-6">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="2">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                                    <polyline points="22 4 12 13.01 9 10.01" />
+                                </svg>
+                                <span className="text-xs text-green-400">{successMessage}</span>
                             </div>
                         )}
 

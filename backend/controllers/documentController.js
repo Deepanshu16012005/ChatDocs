@@ -45,7 +45,10 @@ exports.uploadDocument = async (req, res) => {
             `${process.env.RAG_MICROSERVICE_URL}/process`,
             formData,
             { 
-                headers: formData.getHeaders() 
+                headers: {
+                    ...formData.getHeaders(),
+                    'x-internal-key': process.env.INTERNAL_AUTH_KEY 
+                }
             }
         );
 
