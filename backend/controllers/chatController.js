@@ -29,11 +29,18 @@ exports.sendMessage = async (req, res) => {
             sources: []
         });
         await userMessage.save();
-
+        // Auto update session title from first message
+        const messageCount = await Chat.countDocuments({ session_id });
+        if (messageCount === 1) {
+            const title = message.length > 50
+                ? message.substring(0, 50) + '...'
+                : message;
+            await Session.findByIdAndUpdate(session_id, { title });
+        }
         // Get last 2 turns of chat history for RAG microservice
         const chatHistory = await Chat.find({ session_id })
             .sort({ timestamp: -1 })
-            .limit(4)  
+            .limit(4)
             .sort({ timestamp: 1 }); // re-sort ascending for correct order
 
         // Python RAG microservice
@@ -48,7 +55,8 @@ exports.sendMessage = async (req, res) => {
                 }))
             },
             {
-                headers: { 'Content-Type': 'application/json', 
+                headers: {
+                    'Content-Type': 'application/json',
                     'x-internal-key': process.env.INTERNAL_AUTH_KEY
                 }
             }
@@ -68,7 +76,8 @@ exports.sendMessage = async (req, res) => {
         res.status(200).json({
             response: ragResponse.data.answer,
             sources: ragResponse.data.sources || [],
-            session_id
+            session_id,
+            session_title: messageCount === 1 ? (message.length > 50 ? message.substring(0, 50) + '...' : message) : null
         });
 
     } catch (error) {

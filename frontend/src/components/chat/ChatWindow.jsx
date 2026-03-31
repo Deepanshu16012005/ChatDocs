@@ -8,7 +8,8 @@ const ChatWindow = ({
     activeSession,
     showUploadModal,
     onShowUploadModal,
-    onDocumentUploaded
+    onDocumentUploaded,
+    onSessionTitleUpdate
 }) => {
     const [messages, setMessages] = useState([]);
     const [sending, setSending] = useState(false);
@@ -66,6 +67,9 @@ const ChatWindow = ({
                 timestamp: new Date().toISOString()
             };
             setMessages(prev => [...prev, aiMessage]);
+            if (data.session_title && onSessionTitleUpdate) {
+                onSessionTitleUpdate(sessionId, data.session_title);
+            }
         } catch (error) {
             const errorMessage = {
                 role: 'assistant',
@@ -93,7 +97,7 @@ const ChatWindow = ({
                 <div className="text-center px-6">
                     <div className="w-14 h-14 bg-[#e94560]/15 rounded-2xl flex items-center justify-center mx-auto mb-4">
                         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#e94560" strokeWidth="1.5">
-                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
                         </svg>
                     </div>
                     <h3 className="text-lg font-medium mb-2">Start a conversation</h3>
@@ -129,16 +133,16 @@ const ChatWindow = ({
                 {loadingHistory ? (
                     <div className="flex items-center justify-center py-8">
                         <svg className="animate-spin" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#e94560" strokeWidth="2">
-                            <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+                            <path d="M21 12a9 9 0 1 1-6.219-8.56" />
                         </svg>
                     </div>
                 ) : messages.length === 0 ? (
                     <div className="flex flex-col items-center justify-center flex-1 text-center">
                         <div className="w-12 h-12 bg-[#e94560]/15 rounded-xl flex items-center justify-center mb-3">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#e94560" strokeWidth="1.5">
-                                <circle cx="12" cy="12" r="10"/>
-                                <line x1="12" y1="8" x2="12" y2="12"/>
-                                <line x1="12" y1="16" x2="12.01" y2="16"/>
+                                <circle cx="12" cy="12" r="10" />
+                                <line x1="12" y1="8" x2="12" y2="12" />
+                                <line x1="12" y1="16" x2="12.01" y2="16" />
                             </svg>
                         </div>
                         <p className="text-sm text-white/50 mb-1">No messages yet</p>

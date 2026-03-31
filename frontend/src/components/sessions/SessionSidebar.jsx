@@ -60,21 +60,19 @@ const SessionSidebar = ({
                             <div className="flex border-b border-[#0f3460] flex-shrink-0">
                                 <button
                                     onClick={() => setActiveTab('chats')}
-                                    className={`flex-1 py-3 text-xs font-medium transition-all ${
-                                        activeTab === 'chats'
-                                            ? 'text-[#e94560] border-b-2 border-[#e94560]'
-                                            : 'text-white/40'
-                                    }`}
+                                    className={`flex-1 py-3 text-xs font-medium transition-all ${activeTab === 'chats'
+                                        ? 'text-[#e94560] border-b-2 border-[#e94560]'
+                                        : 'text-white/40'
+                                        }`}
                                 >
                                     Chats
                                 </button>
                                 <button
                                     onClick={() => setActiveTab('documents')}
-                                    className={`flex-1 py-3 text-xs font-medium transition-all ${
-                                        activeTab === 'documents'
-                                            ? 'text-[#e94560] border-b-2 border-[#e94560]'
-                                            : 'text-white/40'
-                                    }`}
+                                    className={`flex-1 py-3 text-xs font-medium transition-all ${activeTab === 'documents'
+                                        ? 'text-[#e94560] border-b-2 border-[#e94560]'
+                                        : 'text-white/40'
+                                        }`}
                                 >
                                     Documents
                                 </button>
@@ -89,8 +87,8 @@ const SessionSidebar = ({
                                             className="w-full py-2 bg-[#e94560] rounded-lg text-xs font-medium flex items-center justify-center gap-1.5 hover:bg-[#c73652] transition-all"
                                         >
                                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5">
-                                                <line x1="12" y1="5" x2="12" y2="19"/>
-                                                <line x1="5" y1="12" x2="19" y2="12"/>
+                                                <line x1="12" y1="5" x2="12" y2="19" />
+                                                <line x1="5" y1="12" x2="19" y2="12" />
                                             </svg>
                                             New chat
                                         </button>
@@ -99,7 +97,7 @@ const SessionSidebar = ({
                                         {loading ? (
                                             <div className="flex items-center justify-center py-8">
                                                 <svg className="animate-spin" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e94560" strokeWidth="2">
-                                                    <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+                                                    <path d="M21 12a9 9 0 1 1-6.219-8.56" />
                                                 </svg>
                                             </div>
                                         ) : sessions.length === 0 ? (
@@ -116,12 +114,27 @@ const SessionSidebar = ({
                                                         <div
                                                             key={id}
                                                             onClick={() => handleSessionClick(session)}
-                                                            className={`px-3 py-2 cursor-pointer border-l-2 transition-all ${
-                                                                isActive ? 'bg-[#e94560]/10 border-[#e94560]' : 'border-transparent hover:bg-white/5'
-                                                            }`}
+                                                            className={`px-3 py-2 cursor-pointer border-l-2 transition-all ${isActive ? 'bg-[#e94560]/10 border-[#e94560]' : 'border-transparent hover:bg-white/5'
+                                                                }`}
                                                         >
-                                                            <div className="text-xs text-white/80 truncate mb-0.5">{session.title || 'New Chat'}</div>
-                                                            <div className="text-[10px] text-white/30">{new Date(session.createdAt).toLocaleDateString()}</div>
+                                                            <div className="flex items-center justify-between gap-1 group">
+                                                                <div className="min-w-0 flex-1">
+                                                                    <div className="text-xs text-white/80 truncate mb-0.5">{session.title || 'New Chat'}</div>
+                                                                    <div className="text-[10px] text-white/30">{new Date(session.createdAt).toLocaleDateString()}</div>
+                                                                </div>
+                                                                <button
+                                                                    onClick={(e) => {
+                                                                        e.stopPropagation();
+                                                                        handleDoubleClick(session);
+                                                                    }}
+                                                                    className="opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:text-[#e94560] text-white/30 flex-shrink-0"
+                                                                >
+                                                                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                                                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                                                                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                                                                    </svg>
+                                                                </button>
+                                                            </div>
                                                         </div>
                                                     );
                                                 })}
@@ -140,9 +153,9 @@ const SessionSidebar = ({
                                     >
                                         <div className="w-8 h-8 bg-[#e94560]/12 rounded-lg flex items-center justify-center mx-auto mb-2">
                                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e94560" strokeWidth="2">
-                                                <polyline points="16 16 12 12 8 16"/>
-                                                <line x1="12" y1="12" x2="12" y2="21"/>
-                                                <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/>
+                                                <polyline points="16 16 12 12 8 16" />
+                                                <line x1="12" y1="12" x2="12" y2="21" />
+                                                <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3" />
                                             </svg>
                                         </div>
                                         <p className="text-xs font-medium mb-0.5">Upload PDF</p>
@@ -218,8 +231,8 @@ const SessionSidebar = ({
                             className="flex-1 flex items-center justify-center gap-1.5 py-1.5 bg-[#e94560] rounded-lg text-xs font-medium hover:bg-[#c73652] transition-all"
                         >
                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5">
-                                <line x1="12" y1="5" x2="12" y2="19"/>
-                                <line x1="5" y1="12" x2="19" y2="12"/>
+                                <line x1="12" y1="5" x2="12" y2="19" />
+                                <line x1="5" y1="12" x2="19" y2="12" />
                             </svg>
                             New chat
                         </button>
@@ -242,7 +255,7 @@ const SessionSidebar = ({
                     {loading ? (
                         <div className="flex items-center justify-center py-8">
                             <svg className="animate-spin" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e94560" strokeWidth="2">
-                                <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+                                <path d="M21 12a9 9 0 1 1-6.219-8.56" />
                             </svg>
                         </div>
                     ) : sessions.length === 0 ? (
@@ -263,9 +276,8 @@ const SessionSidebar = ({
                                         key={id}
                                         onClick={() => onSelectSession(session)}
                                         onDoubleClick={() => handleDoubleClick(session)}
-                                        className={`px-3 py-2 cursor-pointer border-l-2 transition-all ${
-                                            isActive ? 'bg-[#e94560]/10 border-[#e94560]' : 'border-transparent hover:bg-white/5'
-                                        }`}
+                                        className={`px-3 py-2 cursor-pointer border-l-2 transition-all ${isActive ? 'bg-[#e94560]/10 border-[#e94560]' : 'border-transparent hover:bg-white/5'
+                                            }`}
                                     >
                                         {isEditing ? (
                                             <input
@@ -282,8 +294,24 @@ const SessionSidebar = ({
                                             />
                                         ) : (
                                             <>
-                                                <div className="text-xs text-white/80 truncate mb-0.5">{session.title || 'New Chat'}</div>
-                                                <div className="text-[10px] text-white/30">{new Date(session.createdAt).toLocaleDateString()}</div>
+                                                <div className="flex items-center justify-between gap-1 group">
+                                                    <div className="min-w-0 flex-1">
+                                                        <div className="text-xs text-white/80 truncate mb-0.5">{session.title || 'New Chat'}</div>
+                                                        <div className="text-[10px] text-white/30">{new Date(session.createdAt).toLocaleDateString()}</div>
+                                                    </div>
+                                                    <button
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            handleDoubleClick(session);
+                                                        }}
+                                                        className="opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:text-[#e94560] text-white/30 flex-shrink-0"
+                                                    >
+                                                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                                                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                                                        </svg>
+                                                    </button>
+                                                </div>
                                             </>
                                         )}
                                     </div>
