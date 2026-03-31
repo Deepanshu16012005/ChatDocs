@@ -82,10 +82,8 @@ async def process_document(
 @app.post("/query")
 async def query_document(
     request: QueryRequest,
-    x_internal_key: str = Header(None)
+    _: None = Depends(verify_internal_key)
 ):
-    if x_internal_key != INTERNAL_AUTH_KEY:
-        raise HTTPException(status_code=401, detail="Unauthorized")
     if not request.query or not request.user_id:
         raise HTTPException(status_code=400, detail="Missing query or user_id")
 
