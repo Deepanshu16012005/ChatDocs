@@ -5,6 +5,7 @@ const axios = require('axios');
 // @route   POST /api/documents/upload
 // @desc    Upload a document and send to RAG microservice
 exports.uploadDocument = async (req, res) => {
+    let newDocument= null;
     try {
         if (!req.file) {
             return res.status(400).json({ error: 'No file uploaded' });
@@ -21,7 +22,7 @@ exports.uploadDocument = async (req, res) => {
         }
 
         //Save document metadata to MongoDB
-        const newDocument = new Document({
+        newDocument = new Document({
             user_id: req.user.userId,
             filename: req.file.originalname,
             filesize: req.file.size,
@@ -48,7 +49,8 @@ exports.uploadDocument = async (req, res) => {
                 headers: {
                     ...formData.getHeaders(),
                     'x-internal-key': process.env.INTERNAL_AUTH_KEY 
-                }
+                },
+                timeout:100000
             }
         );
 
