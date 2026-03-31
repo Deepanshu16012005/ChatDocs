@@ -7,6 +7,11 @@ const axios = require('axios');
 exports.uploadDocument = async (req, res) => {
     let newDocument= null;
     try {
+        console.log('Upload started');
+    console.log('File:', req.file?.originalname);
+    console.log('User:', req.user?.userId);
+    console.log('RAG URL:', process.env.RAG_MICROSERVICE_URL);
+    console.log('Internal Key exists:', !!process.env.INTERNAL_AUTH_KEY);
         if (!req.file) {
             return res.status(400).json({ error: 'No file uploaded' });
         }
@@ -75,7 +80,7 @@ exports.uploadDocument = async (req, res) => {
 
         // If RAG microservice fails update status to failed
         if (newDocument && newDocument._id) {
-            await Document.findByIdAndDeleteOne({ _id: newDocument._id });
+            await Document.findByIdAndDelete({ _id: newDocument._id });
             console.log('Cleaned up failed document entry from MongoDB');
     }
         res.status(500).json(
