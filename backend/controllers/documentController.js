@@ -7,11 +7,6 @@ const axios = require('axios');
 exports.uploadDocument = async (req, res) => {
     let newDocument= null;
     try {
-        console.log('Upload started');
-    console.log('File:', req.file?.originalname);
-    console.log('User:', req.user?.userId);
-    console.log('RAG URL:', process.env.RAG_MICROSERVICE_URL);
-    console.log('Internal Key exists:', !!process.env.INTERNAL_AUTH_KEY);
         if (!req.file) {
             return res.status(400).json({ error: 'No file uploaded' });
         }

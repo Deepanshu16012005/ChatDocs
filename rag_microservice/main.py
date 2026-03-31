@@ -18,6 +18,12 @@ app.add_middleware(
     allow_headers=["*"]
 )
 INTERNAL_AUTH_KEY = os.getenv("INTERNAL_AUTH_KEY")
+
+def verify_internal_key(x_internal_key: str = Header(None)):
+    if not INTERNAL_AUTH_KEY:
+        raise HTTPException(status_code=500, detail="Internal auth key not configured")
+    if x_internal_key != INTERNAL_AUTH_KEY:
+        raise HTTPException(status_code=401, detail="Unauthorized")
 # --- Data Models ---
 class ChatMessage(BaseModel):
     role: str
@@ -27,9 +33,6 @@ class QueryRequest(BaseModel):
     query: str
     user_id: str
     chat_history: List[ChatMessage] = []
-async def verify_auth(x_internal_key: Optional[str] = Header(None)):
-    if INTERNAL_AUTH_KEY and x_internal_key != INTERNAL_AUTH_KEY:
-        raise HTTPException(status_code=401, detail="Unauthorized: Invalid Secret Key")
 # --- Endpoints ---
 @app.get("/")
 async def root():
@@ -43,9 +46,8 @@ async def process_document(
     filename: str = Form(...),
     filetype: str = Form(...),
     file_content: UploadFile = File(...),
-    x_internal_key: Optional[str] = Header(None)
+    _: None = Depends(verify_internal_key) 
 ):
-    await verify_auth(x_internal_key)
     if filetype.upper() != "PDF":
         raise HTTPException(status_code=400, detail="Only PDF is supported.")
 
@@ -80,9 +82,10 @@ async def process_document(
 @app.post("/query")
 async def query_document(
     request: QueryRequest,
-    x_internal_key: Optional[str] = Header(None)
+    x_internal_key: str = Header(None)
 ):
-    await verify_auth(x_internal_key)
+    if x_internal_key != INTERNAL_AUTH_KEY:
+        raise HTTPException(status_code=401, detail="Unauthorized")
     if not request.query or not request.user_id:
         raise HTTPException(status_code=400, detail="Missing query or user_id")
 
